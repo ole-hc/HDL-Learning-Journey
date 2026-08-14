@@ -1,0 +1,9 @@
+*.jou
+*.log
+.Xil/
+obj_dir/
+build/
+reports/
+*.bit
+*.vcd
+*.xpr
