@@ -1,5 +1,5 @@
-SRC=rtl/counter8bit.sv
-TB=tb/tb_counter8bit.sv
+SRC=rtl/lib/prescaler.sv
+TB=tb/tb_prescaler.sv
  
 SIM?=icarus
  
