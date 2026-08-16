@@ -1,5 +1,5 @@
 module tb_prescaler ();
-    localparam DIV_FACTOR = 20;
+    localparam DIV_FACTOR = 4;
     
     logic clk = 0, resetn = 0, en = 0, out; 
 
@@ -10,26 +10,27 @@ module tb_prescaler ();
         $dumpvars(0, tb_prescaler);
     end
 
-    // scoreboard
+    localparam int EXPECTED_LOW = DIV_FACTOR - 1;
     int cycles = 0;
-    bit out_prev_active = 0;
-    always @(negedge clk) begin
-        if (!resetn) begin
+    always @(posedge clk) begin
+        if (!resetn)  
             cycles <= 0;
-            out_prev_active <= 0;         
+        else if (out) begin
+            if (cycles != EXPECTED_LOW) 
+                $fatal(2, "Wrong period: expected %0d, measured %0d", EXPECTED_LOW, cycles);
+            cycles <= 0;
         end
-        else if (en)            
-            cycles <= cycles + 1;
-        if (out) begin
-            if (out_prev_active)
-                $fatal(2, "Out active for multiple cycles");
-            else begin
-                out_prev_active <= 1;
-                cycles <= 0;
-            end
+        else if (en) begin
+            if (cycles >= EXPECTED_LOW)
+                $fatal(2, "No Out Pulse after %0d active Cycles", cycles);
+            cycles <= cycles + 1; 
         end
-        if (cycles >= DIV_FACTOR)
-            $fatal(2, "Watchdog ERROR. No output signal detected in N=%d Clk cycles", DIV_FACTOR);
+    end
+
+    // watchdog
+    initial begin
+        #1_000_000;
+        $fatal(2, "Timeout");
     end
 
     // stimulus
