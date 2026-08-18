@@ -1,7 +1,7 @@
 module tb_prescaler ();
     localparam DIV_FACTOR = 4;
     
-    logic clk = 0, resetn = 0, en = 0, out; 
+    logic clk = 0, rstn = 0, en = 0, out; 
 
     prescaler #(.PRESCALE_FACTOR(DIV_FACTOR)) dut (.*);
 
@@ -13,7 +13,7 @@ module tb_prescaler ();
     localparam int EXPECTED_LOW = DIV_FACTOR - 1;
     int cycles = 0;
     always @(posedge clk) begin
-        if (!resetn)  
+        if (!rstn)  
             cycles <= 0;
         else if (out) begin
             if (cycles != EXPECTED_LOW) 
@@ -37,7 +37,7 @@ module tb_prescaler ();
     always #10 clk = ~clk;
 
     initial begin
-        #15 resetn = 1;
+        #15 rstn = 1;
         #35 en = 1;
 
         repeat(3) @(negedge out);
@@ -46,9 +46,9 @@ module tb_prescaler ();
         repeat(20) @(negedge clk);
         en = 1;
         repeat(30) @(negedge clk);
-        resetn = 0;
+        rstn = 0;
         repeat(2) @(negedge clk);
-        resetn = 1;
+        rstn = 1;
         repeat(3) @(posedge out);
 
         $display("PASS");

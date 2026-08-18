@@ -2,7 +2,7 @@ module prescaler #(
     PRESCALE_FACTOR = 1000
 ) (
     input clk,
-    input resetn,
+    input rstn,
     input en,
     output out
 );
@@ -12,7 +12,7 @@ module prescaler #(
 
     logic [$clog2(PRESCALE_FACTOR) - 1:0] counter;
     always_ff @(posedge clk) begin 
-        if (!resetn) begin
+        if (!rstn) begin
             counter <= 0;
         end
         else if (en) begin
