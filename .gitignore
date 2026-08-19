@@ -7,3 +7,4 @@ reports/
 *.bit
 *.vcd
 *.xpr
+clockInfo.txt
