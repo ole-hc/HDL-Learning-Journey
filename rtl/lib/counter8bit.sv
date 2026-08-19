@@ -1,7 +1,9 @@
+`default_nettype none
+
 module counter8bit (
-    input clk,
-    input rstn,
-    input en,
+    input wire clk,
+    input wire rstn,
+    input wire en,
     output logic [7:0] out
 );
 

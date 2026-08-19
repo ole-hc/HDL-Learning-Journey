@@ -3,9 +3,9 @@
 module ledCounter #(
     PRESCALE_FACTOR = 100_000_000
 ) (
-    input CLK,
-    input [4:0] BTN,
-    output [7:0] LED
+    input wire CLK,
+    input wire [4:0] BTN,
+    output logic [7:0] LED
 );
 
     logic board_reset;

@@ -1,10 +1,12 @@
+`default_nettype none
+
 module prescaler #(
     PRESCALE_FACTOR = 1000
 ) (
-    input clk,
-    input rstn,
-    input en,
-    output out
+    input wire clk,
+    input wire rstn,
+    input wire en,
+    output logic out
 );
 // PRESCALE_FACTOR >= 2
 
