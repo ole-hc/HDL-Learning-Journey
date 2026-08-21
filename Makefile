@@ -36,6 +36,18 @@ wave: sim
  
 clean:
 	rm -rf build
+
+// CI 
+PROJECTS := $(patsubst tb/tb_%.sv,%,$(wildcard tb/tb_*.sv))
+sim-all: $(addprefix sim-,$(PROJECTS))
+
+lint-all: $(addprefix lint-,$(PROJECTS))
+
+sim-%:
+	$(MAKE) sim PROJ=$*
+
+lint-%:
+	$(MAKE) sim PROJ=$*
  
-.PHONY: lint sim wave clean
+.PHONY: lint sim wave clean sim-all lint-all
  

@@ -1,0 +1,21 @@
+name: Makefile CI
+
+on:
+  push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup environment 
+      run: sudo apt-get update && sudo apt-get install -y iverilog
+
+    - name: Lint all Projects
+    -run: make lint-all
+
+    -name: Simulate all Projects
+    -run: make sim-all
