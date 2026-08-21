@@ -1,15 +1,19 @@
-SRC=rtl/lib/* rtl/top/* 
-TB=tb/tb_ledCounter.sv
- 
+SRC_counter8bit=rtl/lib/counter8bit.sv
+SRC_prescaler=rtl/lib/prescaler.sv
+SRC_ledCounter=rtl/lib/counter8bit.sv rtl/lib/prescaler.sv rtl/top/ledCounter 
+
 SIM?=icarus
+PROJ?=ledCounter
+SRC=$(SRC_$(PROJ))
+TB=tb/tb_$(PROJ).sv 
  
 ifeq ($(SIM),verilator)
 	$(error Verilator sim not yet implemented)
 else
 	LINT_CMD=iverilog -g2012 -t null -Wall $(SRC) $(TB) 
-	ELAB_CMD=iverilog -g2012 -o build/elab.vvp $(SRC) $(TB)
-	SIM_CMD=vvp elab.vvp
-	VIEW_CMD=gtkwave build/dump.vcd
+	ELAB_CMD=iverilog -g2012 -o build/$(PROJ).vvp $(SRC) $(TB)
+	SIM_CMD=vvp $(PROJ).vvp
+	VIEW_CMD=gtkwave build/$(PROJ).vcd
 endif
  
 .DEFAULT_GOAL := sim
@@ -21,10 +25,10 @@ lint: $(SRC) $(TB)
 build:
 	mkdir -p $@
  
-build/elab.vvp: $(SRC) $(TB) | build
+build/$(PROJ).vvp: $(SRC) $(TB) | build
 	$(ELAB_CMD)
  
-sim: build/elab.vvp
+sim: build/$(PROJ).vvp
 	cd build && $(SIM_CMD)
  
 wave: sim

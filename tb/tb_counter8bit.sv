@@ -14,7 +14,7 @@ module tb_counter8bit ();
     counter8bit dut (.*);
 
     initial begin
-        $dumpfile("dump.vcd");
+        $dumpfile("counter8bit.vcd");
         $dumpvars(0, tb_counter8bit);
     end
 

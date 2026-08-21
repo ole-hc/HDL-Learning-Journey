@@ -8,7 +8,7 @@ module tb_ledCounter ();
     ledCounter #(.PRESCALE_FACTOR(PRESCALE_PARAM)) dut (.*);
 
     initial begin
-        $dumpfile("dump.vcd");
+        $dumpfile("ledCounter.vcd");
         $dumpvars(0, tb_ledCounter);
     end
 

@@ -6,7 +6,7 @@ module tb_prescaler ();
     prescaler #(.PRESCALE_FACTOR(DIV_FACTOR)) dut (.*);
 
     initial begin
-        $dumpfile("dump.vcd");
+        $dumpfile("prescaler.vcd");
         $dumpvars(0, tb_prescaler);
     end
 
