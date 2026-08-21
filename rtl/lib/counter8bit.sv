@@ -11,7 +11,7 @@ module counter8bit (
         if (!rstn)
             out <= 0;
         else if (en) begin
-            out <= out + 2;            
+            out <= out + 1;            
         end
     end
 
