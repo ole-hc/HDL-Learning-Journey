@@ -1,5 +1,6 @@
 SRC_counter8bit=rtl/lib/counter8bit.sv
 SRC_prescaler=rtl/lib/prescaler.sv
+SRC_pwm=rtl/lib/pwm.sv
 SRC_ledCounter=rtl/lib/counter8bit.sv rtl/lib/prescaler.sv rtl/top/ledCounter.sv 
 
 SIM?=icarus
