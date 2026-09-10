@@ -2,6 +2,7 @@
 
 module tb_lights_fsm ();
     localparam TB_PHASE_TIME_S = 5;
+    localparam int N_STEPS = 5;
 
     logic clk = 0;
     logic en = 0;
@@ -18,7 +19,7 @@ module tb_lights_fsm ();
         $fatal(2, "Timeout Watchdog");
     end
 
-    logic[7:0] expected_values [5]= '{
+    logic[7:0] expected_values [N_STEPS]= '{
         {2'b10, 2'b10, 2'b10, 2'b10}, // INIT
         {2'b01, 2'b10, 2'b01, 2'b10}, // Car Green
         {2'b10, 2'b10, 2'b10, 2'b10}, // STOP
@@ -26,57 +27,67 @@ module tb_lights_fsm ();
         {2'b10, 2'b10, 2'b10, 2'b10}  // Stop
     };
     
-    int timeout_cycles [5] = '{1, 5, 5, 5, 5};
+    int timeout_cycles [N_STEPS] = '{1, 5, 5, 5, 5};
 
     // reference model
-    int expected_index = 0;
-    int tb_timer = 0;
-    bit tick = 0;
+        int expected_index = 0;
+    int tb_timer       = 0;
+ 
     always @(posedge clk) begin
-        if (!rstn)
+        if (!rstn) begin
             expected_index <= 0;
-
-        else if(en) begin
-            tb_timer <= tb_timer + 1;
-            tick <= 0;
+            tb_timer       <= 0;
+        end
+        else if (en) begin
             if (tb_timer >= timeout_cycles[expected_index] - 1) begin
-                tick <= 1'b1;
-                tb_timer <= 1'b0;
-                expected_index <= expected_index + 1;
-                if (expected_index >= 4)
-                    expected_index <= 1;
+                tb_timer <= 0;
+                expected_index <= (expected_index >= N_STEPS - 1) ? 1 : expected_index + 1;
+            end
+            else begin
+                tb_timer <= tb_timer + 1;
             end
         end
     end
-
-    // scoreboard
-    logic[7:0] expected_value = 0;
+ 
+    // Scoreboard 
+    logic [7:0] expected_value;
+    assign expected_value = expected_values[expected_index];
+ 
     always @(posedge clk) begin
-        expected_value <= expected_values[expected_index];
-        if (expected_value != lights) 
-            $fatal(2, "Expected_output and dut output mismatch: Expected_index=%0d", expected_index);
+        if (expected_value !== lights)
+            $fatal(1, "t=%0t Mismatch: DUT=%08b RM=%08b step=%0d",
+                   $time, lights, expected_value, expected_index);
     end
+
 
     // stimulus
     always #10 clk = ~clk;
     
+    task automatic apply_reset(input int cycles);
+        rstn = 1'b0;
+        repeat (cycles) @(negedge clk);
+        rstn = 1'b1;
+    endtask
+ 
     initial begin
-        rstn = 1;
-        repeat(2) @(negedge clk);
+        apply_reset(3);
+        repeat(2)   @(negedge clk);
         en = 1;
-        
+ 
         repeat(200) @(negedge clk);
+ 
         en = 0;
-        repeat(5) @(negedge clk);
+        repeat(5)   @(negedge clk);
         en = 1;
-        repeat(10) @(negedge clk);
-        rstn = 0;
-        repeat(3) @(negedge clk);
-        rstn = 1;
-        repeat(20) @(negedge clk);
-
+        repeat(10)  @(negedge clk);
+ 
+        apply_reset(3);
+        repeat(20)  @(negedge clk);
+ 
         $display("PASS");
+        $finish;
     end
+
 
 endmodule
 
