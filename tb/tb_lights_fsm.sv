@@ -19,15 +19,21 @@ module tb_lights_fsm ();
         $fatal(2, "Timeout Watchdog");
     end
 
-    logic[7:0] expected_values [N_STEPS]= '{
-        {2'b10, 2'b10, 2'b10, 2'b10}, // INIT
-        {2'b01, 2'b10, 2'b01, 2'b10}, // Car Green
-        {2'b10, 2'b10, 2'b10, 2'b10}, // STOP
-        {2'b10, 2'b01, 2'b10, 2'b01}, // Ped Green
-        {2'b10, 2'b10, 2'b10, 2'b10}  // Stop
-    };
-    
-    int timeout_cycles [N_STEPS] = '{1, 5, 5, 5, 5};
+    logic[7:0] expected_values [N_STEPS];
+    int timeout_cycles [N_STEPS];
+    initial begin
+        expected_values[0] = {2'b10, 2'b10, 2'b10, 2'b10}, // INIT
+        expected_values[1] = {2'b01, 2'b10, 2'b01, 2'b10}, // Car Green
+        expected_values[2] = {2'b10, 2'b10, 2'b10, 2'b10}, // STOP
+        expected_values[3] = {2'b10, 2'b01, 2'b10, 2'b01}, // Ped Green
+        expected_values[4] = {2'b10, 2'b10, 2'b10, 2'b10}  // Stop
+
+        timeout_cycles[0] = 1;
+        timeout_cycles[1] = 5;
+        timeout_cycles[2] = 5;
+        timeout_cycles[3] = 5;
+        timeout_cycles[4] = 5; 
+    end
 
     // reference model
         int expected_index = 0;
