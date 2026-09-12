@@ -22,11 +22,11 @@ module tb_lights_fsm ();
     logic[7:0] expected_values [N_STEPS];
     int timeout_cycles [N_STEPS];
     initial begin
-        expected_values[0] = {2'b10, 2'b10, 2'b10, 2'b10}, // INIT
-        expected_values[1] = {2'b01, 2'b10, 2'b01, 2'b10}, // Car Green
-        expected_values[2] = {2'b10, 2'b10, 2'b10, 2'b10}, // STOP
-        expected_values[3] = {2'b10, 2'b01, 2'b10, 2'b01}, // Ped Green
-        expected_values[4] = {2'b10, 2'b10, 2'b10, 2'b10}  // Stop
+        expected_values[0] = {2'b10, 2'b10, 2'b10, 2'b10}; // INIT
+        expected_values[1] = {2'b01, 2'b10, 2'b01, 2'b10}; // Car Green
+        expected_values[2] = {2'b10, 2'b10, 2'b10, 2'b10}; // STOP
+        expected_values[3] = {2'b10, 2'b01, 2'b10, 2'b01}; // Ped Green
+        expected_values[4] = {2'b10, 2'b10, 2'b10, 2'b10}; // Stop
 
         timeout_cycles[0] = 1;
         timeout_cycles[1] = 5;
