@@ -2,6 +2,7 @@ SRC_counter8bit=rtl/lib/counter8bit.sv
 SRC_prescaler=rtl/lib/prescaler.sv
 SRC_pwm=rtl/lib/pwm.sv
 SRC_lights_fsm=rtl/lib/lights_fsm.sv
+SRC_debounce=rtl/lib/debounce.sv
 SRC_ledCounter=rtl/lib/counter8bit.sv rtl/lib/prescaler.sv rtl/top/ledCounter.sv 
 SRC_lightsFsmTop=rtl/lib/lights_fsm.sv rtl/lib/prescaler.sv rtl/top/lightsFsmTop.sv 
 
